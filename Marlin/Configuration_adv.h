@@ -2398,11 +2398,17 @@
  * probe points will follow. This prevents any change from causing
  * the probe to be unable to reach any points.
  */
+
 #if PROBE_SELECTED && !IS_KINEMATIC
-  //#define PROBING_MARGIN_LEFT PROBING_MARGIN
-  //#define PROBING_MARGIN_RIGHT PROBING_MARGIN
-  //#define PROBING_MARGIN_FRONT PROBING_MARGIN
-  //#define PROBING_MARGIN_BACK PROBING_MARGIN
+  
+  constexpr int nozzle_to_probe_offset[] = NOZZLE_TO_PROBE_OFFSET;
+  #define PROBE_X_OFFSET_FROM_EXTRUDER nozzle_to_probe_offset[0]
+  #define PROBE_Y_OFFSET_FROM_EXTRUDER nozzle_to_probe_offset[1]
+
+  #define PROBING_MARGIN_LEFT (PROBING_MARGIN - PROBE_X_OFFSET_FROM_EXTRUDER)
+  #define PROBING_MARGIN_RIGHT PROBING_MARGIN
+  #define PROBING_MARGIN_FRONT (PROBING_MARGIN - PROBE_Y_OFFSET_FROM_EXTRUDER)
+  #define PROBING_MARGIN_BACK PROBING_MARGIN
 #endif
 
 #if ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL)
